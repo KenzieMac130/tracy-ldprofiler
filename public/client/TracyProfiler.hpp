@@ -77,6 +77,10 @@ TRACY_API uint32_t GetThreadHandle();
 TRACY_API bool ProfilerAvailable();
 TRACY_API bool ProfilerAllocatorAvailable();
 TRACY_API int64_t GetFrequencyQpc();
+#ifdef TRACY_TIMER_CUSTOM
+TRACY_API std::atomic<uint64_t>& GetCustomTime();
+TRACY_API std::atomic<uint64_t>& GetCustomResolution();
+#endif
 
 #if defined TRACY_TIMER_FALLBACK && defined TRACY_HW_TIMER && ( defined __i386 || defined _M_IX86 || defined __x86_64__ || defined _M_X64 )
 TRACY_API bool HardwareSupportsInvariantTSC();  // check, if we need fallback scenario
@@ -194,6 +198,9 @@ public:
 
     static tracy_force_inline int64_t GetTime()
     {
+#ifdef TRACY_TIMER_CUSTOM
+        return GetCustomTime()++;
+#endif
 #ifdef TRACY_HW_TIMER
 #  if defined TARGET_OS_IOS && TARGET_OS_IOS == 1
         if( HardwareSupportsInvariantTSC() ) return mach_absolute_time();

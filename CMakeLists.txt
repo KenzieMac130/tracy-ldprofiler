@@ -136,6 +136,7 @@ set_option(TRACY_LIBUNWIND_BACKTRACE "Use libunwind backtracing where supported"
 set_option(TRACY_SYMBOL_OFFLINE_RESOLVE "Instead of full runtime symbol resolution, only resolve the image path and offset to enable offline symbol resolution" OFF)
 set_option(TRACY_LIBBACKTRACE_ELF_DYNLOAD_SUPPORT "Enable libbacktrace to support dynamically loaded elfs in symbol resolution resolution after the first symbol resolve operation" OFF)
 set_option(TRACY_DEBUGINFOD "Enable debuginfod support" OFF)
+set_option(TRACY_TIMER_CUSTOM "Override the time with an adjustable value via GetCustomTime" OFF)
 
 # advanced
 set_option(TRACY_VERBOSE "[advanced] Verbose output from the profiler" OFF)

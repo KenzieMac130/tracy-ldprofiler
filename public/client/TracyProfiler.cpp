@@ -137,6 +137,11 @@ extern char* __progname;
 namespace tracy
 {
 
+static std::atomic<uint64_t> init_order(100) s_customResolution( std::numeric_limits<int64_t>::max() );
+static std::atomic<uint64_t> init_order(100) s_customTime( 0 );
+TRACY_API std::atomic<uint64_t>& GetCustomTime() { return s_customTime; }
+TRACY_API std::atomic<uint64_t>& GetCustomResolution() { return s_customResolution; }
+
 #ifdef __ANDROID__
 // Implementation helpers of EnsureReadable(address).
 // This is so far only needed on Android, where it is common for libraries to be mapped
@@ -3788,6 +3793,9 @@ void Profiler::CalibrateDelay()
 {
     constexpr int Iterations = 50000;
 
+#ifdef TRACY_TIMER_CUSTOM
+    m_resolution = GetCustomResolution();
+#else
     auto mindiff = std::numeric_limits<int64_t>::max();
     for( int i=0; i<Iterations * 10; i++ )
     {
@@ -3797,6 +3805,7 @@ void Profiler::CalibrateDelay()
         if( dti > 0 && dti < mindiff ) mindiff = dti;
     }
     m_resolution = mindiff;
+#endif
 
 #ifdef TRACY_DELAYED_INIT
     m_delay = m_resolution;
