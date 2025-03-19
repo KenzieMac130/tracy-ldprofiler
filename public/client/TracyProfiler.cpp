@@ -137,8 +137,8 @@ extern char* __progname;
 namespace tracy
 {
 
-static std::atomic<uint64_t> init_order(100) s_customResolution( std::numeric_limits<int64_t>::max() );
-static std::atomic<uint64_t> init_order(100) s_customTime( 0 );
+static std::atomic<uint64_t> init_order(101) s_customResolution( std::numeric_limits<int64_t>::max() );
+static std::atomic<uint64_t> init_order(101) s_customTime( 0 );
 TRACY_API std::atomic<uint64_t>& GetCustomTime() { return s_customTime; }
 TRACY_API std::atomic<uint64_t>& GetCustomResolution() { return s_customResolution; }
 
@@ -1349,9 +1349,9 @@ namespace
 extern moodycamel::ConcurrentQueue<QueueItem> s_queue;
 
 // 2. If these variables would be in the .CRT$XCB section, they would be initialized only in main thread.
-thread_local moodycamel::ProducerToken init_order(107) s_token_detail( s_queue );
-thread_local ProducerWrapper init_order(108) s_token { s_queue.get_explicit_producer( s_token_detail ) };
-thread_local ThreadHandleWrapper init_order(104) s_threadHandle { detail::GetThreadHandleImpl() };
+thread_local moodycamel::ProducerToken init_order(108) s_token_detail( s_queue );
+thread_local ProducerWrapper init_order(109) s_token { s_queue.get_explicit_producer( s_token_detail ) };
+thread_local ThreadHandleWrapper init_order(105) s_threadHandle { detail::GetThreadHandleImpl() };
 
 #  ifdef _MSC_VER
 // 1. Initialize these static variables before all other variables.
@@ -1359,26 +1359,26 @@ thread_local ThreadHandleWrapper init_order(104) s_threadHandle { detail::GetThr
 #    pragma init_seg( ".CRT$XCB" )
 #  endif
 
-static InitTimeWrapper init_order(101) s_initTime { SetupHwTimer() };
-std::atomic<int> init_order(102) RpInitDone( 0 );
-std::atomic<int> init_order(102) RpInitLock( 0 );
+static InitTimeWrapper init_order(102) s_initTime { SetupHwTimer() };
+std::atomic<int> init_order(103) RpInitDone( 0 );
+std::atomic<int> init_order(103) RpInitLock( 0 );
 thread_local bool RpThreadInitDone = false;
 thread_local bool RpThreadShutdown = false;
-moodycamel::ConcurrentQueue<QueueItem> init_order(103) s_queue( QueuePrealloc );
-std::atomic<uint32_t> init_order(104) s_lockCounter( 0 );
-std::atomic<uint8_t> init_order(104) s_gpuCtxCounter( 0 );
+moodycamel::ConcurrentQueue<QueueItem> init_order(104) s_queue( QueuePrealloc );
+std::atomic<uint32_t> init_order(105) s_lockCounter( 0 );
+std::atomic<uint8_t> init_order(105) s_gpuCtxCounter( 0 );
 
-thread_local GpuCtxWrapper init_order(104) s_gpuCtx { nullptr };
+thread_local GpuCtxWrapper init_order(105) s_gpuCtx { nullptr };
 
 struct ThreadNameData;
-static std::atomic<ThreadNameData*> init_order(104) s_threadNameDataInstance( nullptr );
+static std::atomic<ThreadNameData*> init_order(105) s_threadNameDataInstance( nullptr );
 std::atomic<ThreadNameData*>& s_threadNameData = s_threadNameDataInstance;
 
 #  ifdef TRACY_ON_DEMAND
-thread_local LuaZoneState init_order(104) s_luaZoneState { 0, false };
+thread_local LuaZoneState init_order(105) s_luaZoneState { 0, false };
 #  endif
 
-static Profiler init_order(105) s_profiler;
+static Profiler init_order(106) s_profiler;
 
 TRACY_API moodycamel::ConcurrentQueue<QueueItem>::ExplicitProducer* GetToken() { return s_token.ptr; }
 TRACY_API Profiler& GetProfiler() { return s_profiler; }
